@@ -1,0 +1,26 @@
+#root{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    align-items: center;
+    /* background: yellow; */
+    height: 95vh;
+    border: 3px solid rgb(124, 124, 234);
+    border-radius: 10px;
+}
+#tasks{
+    height: 35vh;
+    box-shadow: 0 0 7px black;
+    width: 80vw;
+    border-radius: 10px;
+}
+#tasksDone{
+    height: 35vh;   
+    width: 80vw;
+    border-radius: 10px;
+    box-shadow: 0 0 7px black;
+}
+input{
+    width: 75vw;
+    border-radius: 10px;
+}
