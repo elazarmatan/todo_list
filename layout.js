@@ -1,0 +1,18 @@
+var root = document.querySelector('#root');
+var header = document.createElement('h1');
+header.innerText = 'TODO LIST';
+root === null || root === void 0 ? void 0 : root.appendChild(header);
+var main = document.createElement('main');
+root === null || root === void 0 ? void 0 : root.appendChild(main);
+var addTasks = document.createElement('section');
+addTasks.id = 'addTask';
+var tasks = document.createElement('ul');
+tasks.id = 'tasks';
+var tasksDone = document.createElement('ul');
+tasksDone.id = 'tasksDone';
+var title = document.createElement('h2');
+title.innerText = 'DONE';
+tasksDone.appendChild(title);
+main.appendChild(addTasks);
+main === null || main === void 0 ? void 0 : main.appendChild(tasks);
+main === null || main === void 0 ? void 0 : main.appendChild(tasksDone);
