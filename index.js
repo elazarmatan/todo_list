@@ -17,15 +17,27 @@ function createTask(task) {
     dataExist.unshift(finishTask);
     localStorage.setItem('tasks', JSON.stringify(dataExist));
 }
-function updateTask() { }
-function deleteTask() { }
+function updateTask(id, newTask) {
+    var _a;
+    var allTasks = JSON.parse((_a = localStorage === null || localStorage === void 0 ? void 0 : localStorage.getItem('tasks')) !== null && _a !== void 0 ? _a : '[]');
+    var finishData = allTasks.map(function (task) { return task.id !== id ? task : { 'task': newTask, id: id }; });
+    localStorage.setItem('tasks', JSON.stringify(finishData));
+}
+function deleteTask(id) {
+    var _a;
+    var allTasks = JSON.parse((_a = localStorage === null || localStorage === void 0 ? void 0 : localStorage.getItem('tasks')) !== null && _a !== void 0 ? _a : '[]');
+    var finishData = allTasks.filter(function (task) { return task.id !== id; });
+    localStorage.setItem('tasks', JSON.stringify(finishData));
+}
+function tasksDone() {
+}
 function getAllTasks() {
     var _a;
     var allTasks = JSON.parse((_a = localStorage === null || localStorage === void 0 ? void 0 : localStorage.getItem('tasks')) !== null && _a !== void 0 ? _a : '[]');
     var missions = document.querySelector("#tasks");
-    allTasks.forEach(function (taskObj) { return task(taskObj.task, missions); });
+    allTasks.forEach(function (taskObj) { return task(taskObj.task, missions, taskObj.id); });
 }
-function task(task, container) {
+function task(task, container, id) {
     var mission = document.createElement("li");
     var taskP = document.createElement('p');
     taskP.innerText = task;
@@ -33,6 +45,7 @@ function task(task, container) {
     removeTask.textContent = "remove";
     removeTask.addEventListener("click", function () {
         var _a;
+        deleteTask(id);
         (_a = removeTask.parentElement) === null || _a === void 0 ? void 0 : _a.remove();
     });
     var labelDone = document.createElement('label');
@@ -45,8 +58,8 @@ function task(task, container) {
         if (((_a = mission.parentElement) === null || _a === void 0 ? void 0 : _a.id) === "tasks") {
             labelDone.textContent = 'not done';
             mission.removeChild(edit);
-            var tasksDone = document.querySelector("#tasksDone");
-            tasksDone === null || tasksDone === void 0 ? void 0 : tasksDone.appendChild(mission);
+            var tasksDone_1 = document.querySelector("#tasksDone");
+            tasksDone_1 === null || tasksDone_1 === void 0 ? void 0 : tasksDone_1.appendChild(mission);
         }
         else if (((_b = mission.parentElement) === null || _b === void 0 ? void 0 : _b.id) === "tasksDone") {
             labelDone.textContent = 'done';
@@ -68,6 +81,8 @@ function task(task, container) {
     taskP.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') {
             e.preventDefault();
+            updateTask(id, taskP.textContent);
+            console.log(taskP.textContent);
             taskP.setAttribute('contenteditable', 'false');
         }
         if (e.key === 'Escape') {
@@ -93,7 +108,6 @@ function addTask() {
         if (e.key === "Enter") {
             if (input.value) {
                 createTask(input.value);
-                task(input.value, missions);
                 missions && (missions.innerHTML = "");
                 getAllTasks();
             }

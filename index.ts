@@ -15,20 +15,45 @@ function createTask(task:string){
     dataExist.unshift(finishTask)
     localStorage.setItem('tasks',JSON.stringify(dataExist))
 }
-function updateTask(){}
-function deleteTask(){}
+
+
+
+
+function updateTask(id:number,newTask:string | null){
+    const allTasks= JSON.parse(localStorage?.getItem('tasks') ?? '[]')
+    const finishData = allTasks.map(task => task.id !== id ? task : {'task':newTask,id:id})
+    localStorage.setItem('tasks',JSON.stringify(finishData))
+}
+
+
+
+function deleteTask(id:number){
+    const allTasks= JSON.parse(localStorage?.getItem('tasks') ?? '[]')
+    const finishData = allTasks.filter(task => task.id !== id)
+    localStorage.setItem('tasks',JSON.stringify(finishData))
+}
+
+
+
+function tasksDone(){
+    
+}
+
+
+
 function getAllTasks(){
     const allTasks= JSON.parse(localStorage?.getItem('tasks') ?? '[]')
     const missions = document.querySelector("#tasks");
-    allTasks.forEach(taskObj => task(taskObj.task,missions))
+    allTasks.forEach(taskObj => task(taskObj.task,missions,taskObj.id))
 }
-function task(task:string,container:Element|null){
+function task(task:string,container:Element|null,id:number){
         const mission = document.createElement("li");
         const taskP = document.createElement('p')
         taskP.innerText = task
         const removeTask = document.createElement("button");
         removeTask.textContent = "remove";
         removeTask.addEventListener("click", () => {
+          deleteTask(id)
           removeTask.parentElement?.remove();
         });
          const labelDone = document.createElement('label')
@@ -62,6 +87,8 @@ function task(task:string,container:Element|null){
         taskP.addEventListener('keydown',e => {
             if(e.key === 'Enter'){
                 e.preventDefault()
+                updateTask(id,taskP.textContent)
+                console.log(taskP.textContent)
                 taskP.setAttribute('contenteditable','false')
             }
             if(e.key === 'Escape'){
@@ -88,7 +115,6 @@ function addTask() {
     if (e.key === "Enter") {
       if (input.value) {
         createTask(input.value)
-        task(input.value,missions)
         missions && (missions.innerHTML = "");
         getAllTasks()
       } 
