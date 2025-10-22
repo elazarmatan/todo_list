@@ -133,7 +133,6 @@ function task(task, container, id) {
         if (e.key === "Enter") {
             e.preventDefault();
             updateTask(id, taskP.textContent);
-            console.log(taskP.textContent);
             taskP.setAttribute("contenteditable", "false");
         }
         if (e.key === "Escape") {
