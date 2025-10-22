@@ -5,8 +5,13 @@ function createTask(task:string){
         dataExist= JSON.parse(localStorage?.getItem('tasks') ?? '[]')
     } catch (error) {
         dataExist = []
-    }      
-    finishTask.id = dataExist[dataExist.length - 1]?.id + 1
+    }
+    if(dataExist[0]?.id){
+        finishTask.id = dataExist[0]?.id + 1
+    } 
+    else{
+        finishTask.id = 1
+    }     
     dataExist.unshift(finishTask)
     localStorage.setItem('tasks',JSON.stringify(dataExist))
 }
@@ -15,7 +20,6 @@ function deleteTask(){}
 function getAllTasks(){
     const allTasks= JSON.parse(localStorage?.getItem('tasks') ?? '[]')
     const missions = document.querySelector("#tasks");
-    console.log(`type:${typeof allTasks}`)
     allTasks.forEach(taskObj => task(taskObj.task,missions))
 }
 function task(task:string,container:Element|null){
@@ -79,10 +83,13 @@ function addTask() {
   input.name = "add";
   input.id = 'addInp'
   addMission?.appendChild(input);
+  const missions = document.querySelector("#tasks");
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       if (input.value) {
         createTask(input.value)
+        task(input.value,missions)
+        missions && (missions.innerHTML = "");
         getAllTasks()
       } 
       input.value = ''
