@@ -37,8 +37,17 @@ li{
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-bottom: 1px;
-    margin-top: 2px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    width: 73vw;
+    border: 2px solid rgb(44, 40, 40);
+    border-radius: 17px;
+}
+li:hover{
+    background: aliceblue;
+    width: 78vw;
+    margin-bottom: 7px;
+    margin-top: 7px;
 }
 p{
     max-width: 15px;
@@ -52,8 +61,14 @@ button{
 }
 button:hover{
     background: rgb(57, 57, 177);
+    height: 46px;
+    width: 65Px;
 }
-#DeleteAll{
-    
+#edit{
+    display: none;
 }
-#DeleteDone{}
+li:hover{
+    #edit{
+        display: inline;
+    }
+}
