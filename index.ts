@@ -1,3 +1,4 @@
+//function that create task in the localstorage
 function createTask(task: string) {
   const finishTask = { task: task, id: 0 };
   let dataExist;
@@ -16,7 +17,7 @@ function createTask(task: string) {
 }
 
 
-
+//function that delete list of tasks to the localstorage
 function deleteList(){
   let allTasks = JSON.parse(localStorage?.getItem("tasks") ?? "[]");
   let tasksDoneExist = JSON.parse(localStorage?.getItem("tasksDone") ?? "[]");
@@ -28,18 +29,20 @@ function deleteList(){
     tasksDoneExist = []
     localStorage.setItem("tasks", JSON.stringify(allTasks));
     localStorage.setItem("tasksDone", JSON.stringify(tasksDoneExist));
-    tasksDone?.innerHTML = ''
-    missions?.innerHTML = ''
+    if(tasksDone)tasksDone.innerHTML = ''
+    if(missions)missions.innerHTML = ''
   })
   const deleteDone = document.querySelector('#DeleteDone')
   deleteDone?.addEventListener('click',e => {
     tasksDoneExist = []
     localStorage.setItem("tasksDone", JSON.stringify(tasksDoneExist));
-    tasksDone?.innerHTML = ''
+    if(tasksDone)tasksDone.innerHTML = ''
   })
 }
 
 
+
+//function that update task in the localstorage
 function updateTask(id: number, newTask: string | null) {
   const allTasks = JSON.parse(localStorage?.getItem("tasks") ?? "[]");
   const finishData = allTasks.map((task) =>
@@ -48,11 +51,15 @@ function updateTask(id: number, newTask: string | null) {
   localStorage.setItem("tasks", JSON.stringify(finishData));
 }
 
+
+//function that delete task to the localstorage
 function deleteTask(id: number, list: string) {
   const allTasks = JSON.parse(localStorage?.getItem(list) ?? "[]");
   const finishData = allTasks.filter((task) => task.id !== id);
   localStorage.setItem(list, JSON.stringify(finishData));
 }
+
+
 
 function TasksDone(id: number, lista: string, listb: string) {
   const allTasks = JSON.parse(localStorage?.getItem(listb) ?? "[]");
@@ -62,6 +69,8 @@ function TasksDone(id: number, lista: string, listb: string) {
   tasksDoneExist.unshift(tasksDone[0]);
   localStorage.setItem(lista, JSON.stringify(tasksDoneExist));
 }
+
+
 
 function getAllTasks(selector: string) {
   const allTasks = JSON.parse(localStorage?.getItem("tasks") ?? "[]");
@@ -77,6 +86,8 @@ function getAllTasks(selector: string) {
   }
 }
 
+
+
 function task(task: string, container: Element | null, id: number) {
   const mission = document.createElement("li");
   const taskP = document.createElement("p");
@@ -86,7 +97,7 @@ function task(task: string, container: Element | null, id: number) {
   const removeTask = document.createElement("button");
   removeTask.textContent = "remove";
   removeTask.addEventListener("click", () => {
-    deleteTask(id, mission.parentElement?.id);
+    deleteTask(id, mission.parentElement!.id);
     removeTask.parentElement?.remove();
   });
 
@@ -120,6 +131,7 @@ function task(task: string, container: Element | null, id: number) {
 
   //edit
   const edit = document.createElement("button");
+  edit.id = 'edit'
   edit.textContent = "edit";
   edit.addEventListener("click", () => {
     taskP.setAttribute("contenteditable", "true");
@@ -141,7 +153,6 @@ function task(task: string, container: Element | null, id: number) {
       taskP.setAttribute("contenteditable", "false");
     }
   });
-  
 
   const done = document.createElement("div");
   done.append(checkDone, labelDone);
@@ -153,6 +164,8 @@ function task(task: string, container: Element | null, id: number) {
   }
   container?.appendChild(mission);
 }
+
+
 
 function addTask() {
   const addMission = document.querySelector("#addTask");
@@ -173,6 +186,9 @@ function addTask() {
     }
   });
 }
+
+
+
 deleteList()
 getAllTasks("tasks");
 getAllTasks("done");
