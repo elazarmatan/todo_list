@@ -76,3 +76,6 @@ li:hover{
         display: inline;
     }
 }
+.dragging{
+    opacity: .5;
+}
