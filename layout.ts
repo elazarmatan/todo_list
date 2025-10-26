@@ -25,4 +25,4 @@ function layout() {
   main.append(addTasks,tasksTitle, tasks,tasksDoneTitle, tasksDone);
   root?.append(header,navBar,main)
 }
-layout(); 
+layout();
