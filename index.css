@@ -2,9 +2,7 @@
 #root{
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
     align-items: center;
-    /* background: yellow; */
     height: 95vh;
     border: 3px solid rgb(124, 124, 234);
     border-radius: 10px;
@@ -14,6 +12,8 @@
     margin-bottom: 7px;
     display: flex;
     gap: 5%;
+    justify-content: center;
+    align-items: center;
 }
 #tasks{
     height: 27vh;
@@ -45,13 +45,18 @@ li{
 }
 li:hover{
     background: aliceblue;
-    width: 78vw;
-    margin-bottom: 7px;
-    margin-top: 7px;
+    margin-bottom: 6px;
+    margin-top: 6px;
 }
 p{
-    max-width: 15px;
+    max-width: 145px;
+    white-space: normal;
+    word-break: break-word;
 }
+p[contenteditable="true"] {
+  white-space: nowrap;
+}
+
 button{
     height: 41px;
     width: 60Px;
@@ -61,8 +66,7 @@ button{
 }
 button:hover{
     background: rgb(57, 57, 177);
-    height: 46px;
-    width: 65Px;
+    transform: scale(1.2);
 }
 #edit{
     display: none;
