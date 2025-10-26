@@ -159,6 +159,8 @@ function editTask(taskP:HTMLParagraphElement,id:number){
 
 function task(task: string, container: Element | null, id: number) {
   const mission = document.createElement("li");
+  mission.classList = 'draggable'
+  mission.draggable = true
   const taskP = document.createElement("p");
   taskP.innerText = task;
   const buttons = document.createElement('div')
@@ -171,6 +173,7 @@ function task(task: string, container: Element | null, id: number) {
     buttons.append(edit)
   }
   mission.append(done, taskP, buttons);
+  dragDrop(container)
 }
 
 function addTask() {
@@ -193,6 +196,42 @@ function addTask() {
   });
 }
 
+function getDragAfterElement(container,y){
+   const draggableElements = [...container.querySelectorAll('.draggable:not(.dragging)')]
+   return draggableElements.reduce((closest,child) => {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2
+    if(offset < 0 && offset > closest.offset){
+        return{offset:offset,element:child}
+    }
+    else{
+        return closest
+    }
+   },{offset:Number.NEGATIVE_INFINITY}).element
+}
+
+function dragDrop(container:Element | null){
+  const draggables = document.querySelectorAll('.draggable')
+  draggables.forEach(draggable => {
+     draggable.addEventListener('dragstart', e => {
+        draggable.classList.add('dragging')
+    })
+     draggable.addEventListener('dragend', e => {
+        draggable.classList.remove('dragging')
+    })
+  })
+  container?.addEventListener('dragover', (e:DragEvent) => {
+        e.preventDefault()
+        const afterElement = getDragAfterElement(container,e.clientY)
+        const draggable = document.querySelector('.dragging')
+        if(afterElement == null){
+            container.appendChild(draggable)
+        }
+        else{
+            container.insertBefore(draggable,afterElement)
+        }
+    })
+}
 
 
 deleteList()
