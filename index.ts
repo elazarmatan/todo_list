@@ -16,7 +16,6 @@ function createTask(task: string) {
   localStorage.setItem("tasks", JSON.stringify(dataExist));
 }
 
-
 //function that delete list of tasks to the localstorage
 function deleteList(){
   let allTasks = JSON.parse(localStorage?.getItem("tasks") ?? "[]");
@@ -40,8 +39,6 @@ function deleteList(){
   })
 }
 
-   
-
 //function that update task in the localstorage
 function updateTask(id: number, newTask: string | null) {
   const allTasks = JSON.parse(localStorage?.getItem("tasks") ?? "[]");
@@ -51,14 +48,12 @@ function updateTask(id: number, newTask: string | null) {
   localStorage.setItem("tasks", JSON.stringify(finishData));
 }
 
-
 //function that delete task to the localstorage
 function deleteTask(id: number, list: string) {
   const allTasks = JSON.parse(localStorage?.getItem(list) ?? "[]");
   const finishData = allTasks.filter((task) => task.id !== id);
   localStorage.setItem(list, JSON.stringify(finishData));
 }
-
 
 //this function update to list in localstorage if task is done or not
 function TasksDone(id: number, lista: string, listb: string) {
@@ -69,7 +64,6 @@ function TasksDone(id: number, lista: string, listb: string) {
   tasksDoneExist.unshift(tasksDone[0]);
   localStorage.setItem(lista, JSON.stringify(tasksDoneExist));
 }
-
 
 //this function get al the tasks from localstorage
 function getAllTasks(selector: string) {
@@ -86,7 +80,6 @@ function getAllTasks(selector: string) {
   }
 }
 
-
 //this function remove task from the dom
 function removeTaskDom(id:number,mission:HTMLLIElement){
   const removeTask = document.createElement("button");
@@ -97,7 +90,6 @@ function removeTaskDom(id:number,mission:HTMLLIElement){
   });
   return removeTask
 }
-
 
 //this function update the dom if task is done task 
 function taskIsDone(mission:HTMLLIElement,edit:HTMLButtonElement,container:Element | null,id:number,buttons:HTMLDivElement){
@@ -165,25 +157,6 @@ function editTask(taskP:HTMLParagraphElement,id:number){
   return edit
 }
 
-
-
-// function dragDrop(missions:HTMLUListElement){
-//     missions.addEventListener('dragstart' , e => {
-//         const target = e.target as HTMLElement;
-//         target.classList.add('dragging')
-//     })
-//     missions.addEventListener('dragend',e => {
-//         const target = e.target as HTMLElement;
-//         target?.classList.remove('dragging')
-//     })
-//     missions.addEventListener('dragover',e => {
-//         e.preventDefault()
-//         const dragging = document.querySelector(".dragging");
-//         console.log('dragging')
-//     })
-// }
-
-
 function task(task: string, container: Element | null, id: number) {
   const mission = document.createElement("li");
   const taskP = document.createElement("p");
@@ -200,8 +173,6 @@ function task(task: string, container: Element | null, id: number) {
   mission.append(done, taskP, buttons);
 }
 
-
-
 function addTask() {
   const addMission = document.querySelector("#addTask");
   const input = document.createElement("input");
@@ -212,7 +183,7 @@ function addTask() {
   const missions = document.querySelector("#tasks");
   input.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
-      if (input.value) {
+      if (input.value.trim()) {
         createTask(input.value);
         missions && (missions.innerHTML = "");
         getAllTasks("tasks");
