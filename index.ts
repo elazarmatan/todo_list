@@ -40,7 +40,7 @@ function deleteList(){
   })
 }
 
-
+   
 
 //function that update task in the localstorage
 function updateTask(id: number, newTask: string | null) {
@@ -60,7 +60,7 @@ function deleteTask(id: number, list: string) {
 }
 
 
-
+//this function update to list in localstorage if task is done or not
 function TasksDone(id: number, lista: string, listb: string) {
   const allTasks = JSON.parse(localStorage?.getItem(listb) ?? "[]");
   const tasksDone = allTasks.filter((task) => task.id === id);
@@ -71,7 +71,7 @@ function TasksDone(id: number, lista: string, listb: string) {
 }
 
 
-
+//this function get al the tasks from localstorage
 function getAllTasks(selector: string) {
   const allTasks = JSON.parse(localStorage?.getItem("tasks") ?? "[]");
   const tasksDoneExist = JSON.parse(localStorage?.getItem("tasksDone") ?? "[]");
@@ -87,21 +87,21 @@ function getAllTasks(selector: string) {
 }
 
 
-
-function task(task: string, container: Element | null, id: number) {
-  const mission = document.createElement("li");
-  const taskP = document.createElement("p");
-  taskP.innerText = task;
-
-  //remove task
+//this function remove task from the dom
+function removeTaskDom(id:number,mission:HTMLLIElement){
   const removeTask = document.createElement("button");
   removeTask.textContent = "remove";
   removeTask.addEventListener("click", () => {
     deleteTask(id, mission.parentElement!.id);
-    removeTask.parentElement?.remove();
+    removeTask.parentElement?.parentElement?.remove();
   });
+  return removeTask
+}
 
-  //done
+
+//this function update the dom if task is done task 
+function taskIsDone(mission:HTMLLIElement,edit:HTMLButtonElement,container:Element | null,id:number,buttons:HTMLDivElement){
+  const done = document.createElement("div");
   const labelDone = document.createElement("label");
   labelDone.htmlFor = `${id}`;
   const checkDone = document.createElement("input");
@@ -115,21 +115,30 @@ function task(task: string, container: Element | null, id: number) {
   checkDone.addEventListener("change", (e) => {
     if (mission.parentElement?.id === "tasks") {
       labelDone.textContent = "not done";
-      mission.removeChild(edit);
+      buttons.removeChild(edit);
       TasksDone(id, "tasksDone", "tasks");
       const tasksDone = document.querySelector("#tasksDone");
       tasksDone?.appendChild(mission);
     } else if (mission.parentElement?.id === "tasksDone") {
       labelDone.textContent = "done";
-      mission.appendChild(edit);
+      buttons.appendChild(edit);
       TasksDone(id, "tasks", "tasksDone");
       const missions = document.querySelector("#tasks");
       missions?.appendChild(mission);
     }
   });
   checkDone.type = "checkbox";
+  done.append(checkDone, labelDone);
 
-  //edit
+   if (container?.id === "tasksDone") {
+    checkDone.checked = true;
+  }
+  container?.appendChild(mission);
+  return done
+}
+
+// this function update the task in dom
+function editTask(taskP:HTMLParagraphElement,id:number){
   const edit = document.createElement("button");
   edit.id = 'edit'
   edit.textContent = "edit";
@@ -153,16 +162,42 @@ function task(task: string, container: Element | null, id: number) {
       taskP.setAttribute("contenteditable", "false");
     }
   });
+  return edit
+}
 
-  const done = document.createElement("div");
-  done.append(checkDone, labelDone);
-  mission.append(done, taskP, removeTask);
+
+
+// function dragDrop(missions:HTMLUListElement){
+//     missions.addEventListener('dragstart' , e => {
+//         const target = e.target as HTMLElement;
+//         target.classList.add('dragging')
+//     })
+//     missions.addEventListener('dragend',e => {
+//         const target = e.target as HTMLElement;
+//         target?.classList.remove('dragging')
+//     })
+//     missions.addEventListener('dragover',e => {
+//         e.preventDefault()
+//         const dragging = document.querySelector(".dragging");
+//         console.log('dragging')
+//     })
+// }
+
+
+function task(task: string, container: Element | null, id: number) {
+  const mission = document.createElement("li");
+  const taskP = document.createElement("p");
+  taskP.innerText = task;
+  const buttons = document.createElement('div')
+  const removeTask = removeTaskDom(id,mission)
+  const edit = editTask(taskP,id)
+  const done = taskIsDone(mission,edit,container,id,buttons)
+  buttons.id = 'buttons'
+  buttons.appendChild(removeTask)
   if (container?.id === "tasks") {
-    mission.append(edit)
-  } else if (container?.id === "tasksDone") {
-    checkDone.checked = true;
+    buttons.append(edit)
   }
-  container?.appendChild(mission);
+  mission.append(done, taskP, buttons);
 }
 
 
